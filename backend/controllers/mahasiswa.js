@@ -93,7 +93,7 @@ const mahasiswaController = {
       }
 
       res.status(200).json({
-        message: "Get data mahasiswa",
+        message: "Get Detail Mahasiswa",
         data: mahasiswa,
       });
     } catch (error) {
@@ -101,7 +101,6 @@ const mahasiswaController = {
     }
   },
   post: async (req, res) => {
-    console.log(req.file);
     try {
       const mahasiswa = await Mahasiswa.create({
         nim: req.body.nim,
@@ -125,7 +124,7 @@ const mahasiswaController = {
       const mahasiswa = await Mahasiswa.update(
         {
           nama: req.body.nama,
-          jurusan: req.body.jurusan,
+          kd_jurusan: req.body.kd_jurusan,
         },
         { where: { nim: req.params.nim } }
       );
