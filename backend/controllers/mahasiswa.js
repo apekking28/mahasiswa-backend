@@ -14,7 +14,7 @@ const mahasiswaController = {
           ["angkatan", "tahunAngkatan"],
           ["foto", "fotoMahasiswa"],
         ],
-        include: [{ model: Jurusan, as: "jurusan" }],
+        // include: [{ model: Jurusan, as: "jurusan" }],
         where: {
           angkatan: { [Op.between]: [2018, 2022] },
         },
