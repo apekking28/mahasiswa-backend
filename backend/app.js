@@ -4,12 +4,33 @@ require("dotenv").config();
 const port = process.env.PORT || 3000;
 const database = require("./config/database");
 const bodyParser = require("body-parser");
-const mahasiswaRouter = require("./routes/mahasiswa");
+const mahasiswaRoutes = require("./routes/mahasiswa");
+const axiosRoutes = require("./routes/axios");
+const basicAuth = require("express-basic-auth");
+const helmet = require("helmet");
+
+// helmet js
+app.use(helmet());
+
+// app.use(
+//   basicAuth({
+//     users: { admin: "supersecret" },
+//     unauthorizedResponse: basicAuthResponse,
+//   })
+// );
+
+// function basicAuthResponse(req) {
+//   return req.auth
+//     ? ("Credenctials", +req.auth.user + ":" + req.auth.password + "rejected")
+//     : "Unauthorized";
+// }
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use("/mahasiswa", mahasiswaRouter);
+// routes
+app.use("/mahasiswa", mahasiswaRoutes);
+app.use("/axios", axiosRoutes);
 app.use("/assest", express.static("assest"));
 
 app.use((req, res, next) => {
