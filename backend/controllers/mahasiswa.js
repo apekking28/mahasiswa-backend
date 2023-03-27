@@ -5,7 +5,7 @@ const { Op } = require("sequelize");
 const mahasiswaController = {
   getAll: async (req, res) => {
     try {
-      const mahasiswa = await Mahasiswa.findAll({
+      const mahasiswa = await Mahasiswa.findAndCountAll({
         attributes: [
           ["nim", "nimMahasiswa"],
           ["nama", "namaMahasiswa"],
@@ -14,7 +14,7 @@ const mahasiswaController = {
           ["angkatan", "tahunAngkatan"],
           ["foto", "fotoMahasiswa"],
         ],
-        // include: [{ model: Jurusan, as: "jurusan" }],
+        include: [{ model: Jurusan, as: "jurusan" }],
         where: {
           angkatan: { [Op.between]: [2018, 2022] },
         },
@@ -147,6 +147,55 @@ const mahasiswaController = {
       });
     } catch (error) {
       res.status(500).json({ message: error.message });
+    }
+  },
+  getWithPagination: async (req, res) => {
+    try {
+      let limit = parseInt(req.query.record);
+      let page = parseInt(req.query.page);
+      let start = 0 + (page - 1) * limit;
+      let end = page * limit;
+
+      const mahasiswa = await Mahasiswa.findAndCountAll({
+        attributes: [
+          ["nim", "nimMahasiswa"],
+          ["nama", "namaMahasiswa"],
+          ["kd_jurusan", "kodeJurusan"],
+          ["alamat", "alamat"],
+          ["angkatan", "tahunAngkatan"],
+          ["foto", "fotoMahasiswa"],
+        ],
+        limit: limit,
+        offset: start,
+      });
+
+      let countFiltered = mahasiswa.count;
+      let pagination = {};
+
+      pagination.totalRow = mahasiswa.count;
+      pagination.totalPage = Math.ceil(countFiltered / limit);
+
+      if (end < countFiltered) {
+        pagination.next = {
+          page: page + 1,
+          limit,
+        };
+      }
+
+      if (start > 0) {
+        pagination.prev = {
+          page: page - 1,
+          limit,
+        };
+      }
+
+      res.status(200).json({
+        message: "data tidak ada",
+        pagination,
+        data: mahasiswa.rows,
+      });
+    } catch (error) {
+      res.status(500).json({ message: error });
     }
   },
 };
