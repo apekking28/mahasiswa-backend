@@ -16,6 +16,8 @@ const upload = multer({ storage: storage });
 
 router.get("/", mahasiswaController.getAll);
 
+router.get("/pagination", mahasiswaController.getWithPagination);
+
 router.get("/search", mahasiswaController.search);
 
 router.get("/:nim", mahasiswaController.getOne);

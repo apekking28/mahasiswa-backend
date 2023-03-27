@@ -40,6 +40,43 @@ const axiosContoller = {
       res.status(404).json({ message: error.message });
     }
   },
+  update: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const response = await axios({
+        method: "put",
+        url: "https://jsonplaceholder.typicode.com/posts/" + id,
+        data: {
+          title: req.body.title,
+          body: req.body.body,
+          userId: 1,
+        },
+      });
+
+      res.status(201).json({
+        message: "Berhasil edit data",
+        data: response.data,
+      });
+    } catch (error) {
+      res.status(404).json({ message: error.message });
+    }
+  },
+  delete: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const response = await axios({
+        method: "delete",
+        url: "https://jsonplaceholder.typicode.com/posts/" + id,
+      });
+      console.log(response);
+      res.status(200).json({
+        message: "Berhasil hapus data",
+        data: response.data,
+      });
+    } catch (error) {
+      res.status(404).json({ message: error.message });
+    }
+  },
 };
 
 module.exports = axiosContoller;
