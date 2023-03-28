@@ -1,3 +1,3 @@
 # mahasiswa
 
-# This is the student data management project
+# This is the mahasiswa data management project
