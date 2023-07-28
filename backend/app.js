@@ -4,6 +4,7 @@ require("dotenv").config();
 const port = process.env.PORT || 3000;
 const database = require("./config/database");
 const bodyParser = require("body-parser");
+
 // Routes
 const mahasiswaRoutes = require("./routes/mahasiswa");
 const jurusanRoutes = require("./routes/jurusan");
@@ -15,11 +16,15 @@ const helmet = require("helmet");
 // SWAGGER
 const swaggerUi = require("swagger-ui-express");
 const apiDocumentation = require("./apidocs.json");
+const morgan = require("morgan");
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(apiDocumentation));
 // END SWAGGER
 
 // helmet js
 app.use(helmet());
+
+// morgan
+app.use(morgan("dev"));
 
 // app.use(
 //   basicAuth({
